@@ -1,18 +1,31 @@
 package com.reportprojectsalesdata.reportproject.repository;
 
 import com.reportprojectsalesdata.reportproject.entity.Product;
-import org.junit.jupiter.api.AutoClose;
+import io.github.cdimascio.dotenv.Dotenv;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@SpringBatchTest
+@SpringBootTest
+@TestPropertySource(properties = {
+        "spring.datasource.url=${DB_URL}",
+        "spring.datasource.username=${DB_USERNAME}",
+        "spring.datasource.password=${DB_PASSWORD}"
+})
 class ProductRepositoryTest {
+
+    @BeforeAll
+    static void setup() {
+        // Load environment variables from .env file
+        Dotenv dotenv = Dotenv.configure().directory("./").load();
+        System.setProperty("DB_URL", dotenv.get("DB_URL"));
+        System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
+        System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
+    }
 
     @Autowired
     private ProductRepository productRepository;
@@ -21,8 +34,8 @@ class ProductRepositoryTest {
     void saveMethod() {
 
         Product product = new Product();
-        product.setName("Galaxy 24");
-        product.setDescription("Sercem urządzenia jest firmowy układ Exynos 2400 z Androidem 14 w konfiguracji 8/128 GB, 8/256 GB lub 8/512 GB");
+        product.setName("dfg");
+        product.setDescription("dfg");
         product.setSku("100ABC");
         product.setPrice(new BigDecimal(100));
         product.setActive(true);
@@ -31,5 +44,6 @@ class ProductRepositoryTest {
         Product savedObject = productRepository.save(product);
 
         System.out.println(savedObject.getId());
+        System.out.println(savedObject.toString());
     }
 }

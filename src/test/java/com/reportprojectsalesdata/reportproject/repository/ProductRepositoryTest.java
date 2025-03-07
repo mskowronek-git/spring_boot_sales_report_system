@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @SpringBootTest
 @TestPropertySource(properties = {
@@ -45,5 +46,83 @@ class ProductRepositoryTest {
 
         System.out.println(savedObject.getId());
         System.out.println(savedObject.toString());
+    }
+
+    @Test
+    void updateUsingSaveMethod() {
+
+        Long id =1L;
+        Product product = productRepository.findById(id).get();
+        product.setName("updated product 1");
+        product.setDescription("updated product 1 desc");
+
+        productRepository.save(product);
+    }
+
+    @Test
+    void findByIdMethod(){
+        Long id = 1L;
+
+        Product product = productRepository.findById(id).get();
+    }
+
+    @Test
+    void saveAllMethod() {
+        Product product = new Product();
+        product.setName("Galaxy 21");
+        product.setDescription("Galaxy 23 desc");
+        product.setSku("5");
+        product.setPrice(new BigDecimal(1700));
+        product.setActive(true);
+        product.setImageUrl("galaxy23.png");
+
+        Product product2 = new Product();
+        product2.setName("Galaxy 20");
+        product2.setDescription("Galaxy 22 desc");
+        product2.setSku("6");
+        product2.setPrice(new BigDecimal(1300));
+        product2.setActive(true);
+        product2.setImageUrl("galaxy22.png");
+
+        productRepository.saveAll(List.of(product, product2));
+    }
+
+    @Test
+    void findAllMethod() {
+        List<Product> products = productRepository.findAll();
+        products.forEach((p) -> {
+            System.out.println(p.getName());
+        });
+    }
+
+    @Test
+    void deleteByIdMethod() {
+        Long id = 1L;
+        productRepository.deleteById(id);
+    }
+
+    @Test
+    void deleteMethod() {
+        Long id = 52L;
+        Product product = productRepository.findById(id).get();
+        productRepository.delete(product);
+    }
+
+    @Test
+    void deleteAllMethod() {
+        productRepository.deleteAll();
+    }
+
+    @Test
+    void countMethod() {
+        long count = productRepository.count();
+        System.out.println(count);
+    }
+
+    @Test
+    void existsByIdMethod() {
+        Long id = 102L;
+        boolean ifExists = productRepository.existsById(id);
+        System.out.println(ifExists);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootTest
@@ -124,5 +125,56 @@ class ProductRepositoryTest {
         Long id = 102L;
         boolean ifExists = productRepository.existsById(id);
         System.out.println(ifExists);
+    }
+
+    @Test
+     void findByName() {
+        Product product = productRepository.findByName("Galaxy 21");
+        System.out.println(product.getName());
+    }
+
+    @Test
+    void findByNameOrDescription() {
+        Product product = productRepository.findByNameOrDescription("Galaxy 29", "Galaxy 22 desc");
+
+        System.out.println(product.getName());
+    }
+
+    @Test
+    void findByNameLike() {
+        List<Product> productList = productRepository.findByNameLike("%Galaxy%");
+
+        productList.forEach((p) -> {
+            System.out.println(p.getName());
+        });
+    }
+
+    @Test
+    void findByDateCreatedBetween() {
+        LocalDateTime startDate = LocalDateTime.of(2025, 3, 7, 10, 32, 33);
+        LocalDateTime endDate = LocalDateTime.of(2025, 3, 7, 23, 32, 33);
+        List<Product> productList = productRepository.findByDateCreatedBetween(startDate, endDate);
+
+        productList.forEach((p) -> {
+            System.out.println(p.getName());
+        });
+    }
+
+    @Test
+    void findByNameIn() {
+        List<Product> productList = productRepository.findByNameIn(List.of("Galaxy 23" , "Galaxy 24"));
+
+        productList.forEach((p) -> {
+            System.out.println(p.getName());
+        });
+    }
+
+    @Test
+    void findFirst2ByOrderByNameAsc() {
+        List<Product> productList = productRepository.findFirst2ByOrderByNameAsc();
+
+        productList.forEach((p) -> {
+            System.out.println(p.getName());
+        });
     }
 }

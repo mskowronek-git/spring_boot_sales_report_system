@@ -14,8 +14,24 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@NamedQuery(name = "Product.findBySku",
- query = "SELECT p from Product p WHERE p.sku =:sku")
+@NamedQueries(
+        {
+            @NamedQuery(name = "Product.findBySku",
+                    query = "SELECT p from Product p WHERE p.sku =:sku"
+            ),
+            @NamedQuery(name = "Product.findByPrice",
+            query = "SELECT p from Product p WHERE p.price =:price"
+            )
+        }
+)
+@NamedNativeQueries(
+        {
+            @NamedNativeQuery(name = "Product.findBySku",
+                    query = "SELECT * from PRODUCTS WHERE p.sku =:sku",
+                    resultClass = Product.class)
+        }
+)
+
 @Table(name = "products",
         schema = "sales_report_db",
 uniqueConstraints = {

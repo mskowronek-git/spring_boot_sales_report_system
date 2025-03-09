@@ -11,39 +11,42 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    public Product findByName(String name);
+    Product findByName(String name);
 
-    public Product findByNameOrDescription(String name, String description);
+    Product findByNameOrDescription(String name, String description);
 
-    public Product findDistinctByName(String name);
+    Product findDistinctByName(String name);
 
-    public Product findByPriceGreaterThan(BigDecimal price);
+    Product findByPriceGreaterThan(BigDecimal price);
 
-    public List<Product> findByNameContaining(String name);
+    List<Product> findByNameContaining(String name);
 
-    public List<Product> findByNameLike(String name);
+    List<Product> findByNameLike(String name);
 
-    public List<Product> findByDateCreatedBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<Product> findByDateCreatedBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    public List<Product> findByNameIn(List<String> names);
+    List<Product> findByNameIn(List<String> names);
 
-    public List<Product> findFirst2ByOrderByNameAsc();
+    List<Product> findFirst2ByOrderByNameAsc();
 
     @Query("select p from Product p where p.name = ?1 or p.description = ?2")
-    public Product findByNameOrDescriptionJPQLIndexParam(String name, String description);
+    Product findByNameOrDescriptionJPQLIndexParam(String name, String description);
 
     @Query("select p from Product p where p.name =:name or p.description =:description")
-    public Product findByNameOrDescriptionJPQLNamedParam(@Param("name") String name,
-                                                         @Param("description") String description);
+    Product findByNameOrDescriptionJPQLNamedParam(@Param("name") String name,
+                                                  @Param("description") String description);
 
     @Query(value = "select * from products p where p.name = ?1 " +
             " or p.description = ?2", nativeQuery = true)
-    public Product findByNameOrDescriptionSQLIndexParam(String name, String description);
+    Product findByNameOrDescriptionSQLIndexParam(String name, String description);
 
     @Query(value = "select * from products p where p.name =:name " +
             " or p.description =:description", nativeQuery = true)
-    public Product findByNameOrDescriptionSQLNamedParam(@Param("name") String name,
-                                                         @Param("description") String description);
+    Product findByNameOrDescriptionSQLNamedParam(@Param("name") String name,
+                                                 @Param("description") String description);
 
-    public Product findBySku(String sku);
+    Product findBySku(String sku);
+
+    @Query(nativeQuery = true)
+    Product findByDescription(String description);
 }

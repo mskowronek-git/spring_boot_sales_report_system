@@ -177,4 +177,39 @@ class ProductRepositoryTest {
             System.out.println(p.getName());
         });
     }
+
+    @Test
+    void findByNameOrDescriptionJPQLIndexParam() {
+        Product product = productRepository.findByNameOrDescriptionJPQLIndexParam("Galaxy 23" , "Galaxy");
+
+        System.out.println(product.getName());
+    }
+
+    @Test
+    void findByNameOrDescriptionJPQLNamedParam() {
+        Product product = productRepository.findByNameOrDescriptionJPQLNamedParam("Galaxy 23" , "Galaxy");
+
+        System.out.println(product.getName());
+    }
+
+    @Test
+    void findByNameOrDescriptionSQLIndexParam() {
+        Product product = productRepository.findByNameOrDescriptionSQLIndexParam("Galaxy 23" , "Galaxy");
+
+        System.out.println(product.getName());
+    }
+
+    @Test
+    void findByNameOrDescriptionSQLNamedParam() {
+        Product product = productRepository.findByNameOrDescriptionSQLNamedParam("Galaxy 23" , "Galaxy");
+
+        System.out.println(product.getName());
+    }
+
+    @Test
+    void findBySku() {
+        Product product = productRepository.findBySku("100ABC");
+
+        System.out.println(product.getName());
+    }
 }

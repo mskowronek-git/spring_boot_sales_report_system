@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@NamedQuery(name = "Product.findBySku",
+ query = "SELECT p from Product p WHERE p.sku =:sku")
 @Table(name = "products",
         schema = "sales_report_db",
 uniqueConstraints = {

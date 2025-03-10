@@ -6,6 +6,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.TestPropertySource;
 
 import java.math.BigDecimal;
@@ -212,4 +216,69 @@ class ProductRepositoryTest {
 
         System.out.println(product.getName());
     }
+
+    @Test
+    void pagination() {
+
+        int pageNo = 0;
+        int pageSize = 5;
+
+        //create pageable object
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+
+        Page<Product> page = productRepository.findAll(pageable);
+
+        List<Product> products = page.getContent();
+        products.forEach((p) ->
+                System.out.println(p.getName()));
+
+        int totalPage = page.getTotalPages();
+        long totalElements = page.getTotalElements();
+        int numberOfElements = page.getNumberOfElements();
+        int size = page.getSize();
+        boolean isLast = page.isLast();
+        boolean isFirst = page.isFirst();
+    }
+
+    @Test
+    void sorting() {
+        String sortByPrice = "price";
+        String sortByDesc = "description";
+        String sortDir = "desc";
+
+        Sort sortName = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortByPrice).ascending()
+                : Sort.by(sortByPrice).descending();
+
+        Sort sortDesc = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortByDesc).ascending()
+                : Sort.by(sortByDesc).descending();
+
+        Sort groupBySort = sortName.and(sortDesc);
+        List<Product> products = productRepository.findAll(groupBySort);
+
+        products.forEach(System.out::println);
+    }
+
+    @Test
+    void sortingAndPaging() {
+
+        int pageNo = 0;
+        int pageSize = 5;
+
+        String sortByPrice = "price";
+        String sortByDescription = "description";
+        String sortDir = "desc";
+        Sort sortName = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortByPrice).ascending()
+                : Sort.by(sortByPrice).descending();
+        Sort sortDesc = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortByDescription).ascending()
+                : Sort.by(sortByDescription).descending();
+        Sort groupBySort = sortName.and(sortDesc);
+
+        Pageable pageable = PageRequest.of(pageNo, pageSize, groupBySort);
+        Page<Product> listPfProducts = productRepository.findAll(pageable);
+
+        List<Product> products = listPfProducts.getContent();
+        products.forEach((p) ->
+                System.out.println(p.getName()));
+    }
+
 }

@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 )
 @NamedNativeQueries(
         {
-            @NamedNativeQuery(name = "Product.findBySku",
+            @NamedNativeQuery(name = "Product.findBySkuNative",
                     query = "SELECT * from PRODUCTS WHERE p.sku =:sku",
                     resultClass = Product.class)
         }

@@ -6,6 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Data
 @Entity
@@ -33,6 +36,22 @@ public class Order {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "billing_address_id", referencedColumnName = "id")
     private Address billing_address_id;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy="order")
+    private Set<OrderItem> orderItems = new HashSet<>();
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public Long getId() {
         return id;
